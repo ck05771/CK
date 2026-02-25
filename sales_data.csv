@@ -1,0 +1,8 @@
+Date,Product_ID,Product Name,Category,Quantity,Unit Price,Region
+2023-02-15,P003,Desk,Furniture,2,3000,North
+invalid_date,P004,Chair,Furniture,-1,-500,South
+2023-01-15,P001,Laptop,IT,2,25000,North
+2026-02-25,P001,Notebook,IT,4,25000,East
+2026-02-25,P001,Desk,Furniture,1,3000,North
+2026-02-25,P001,Desk,Furniture,1,3000,North
+2026-02-25,,,IT,1,1,North
