@@ -8,25 +8,30 @@ import os
 # ── Page config ──────────────────────────────────────────────────────────────
 st.set_page_config(page_title="Sales Analytics Dashboard", layout="wide")
 
-# ── Global CSS: Clean & Simple ────────────────────────────────────────────────
+# ── Global CSS: Warm Earthy Professional ──────────────────────────────────────
 st.markdown("""
 <style>
-/* Import font */
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+/* Import fonts */
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
 
-/* Root variables */
+/* Root variables — warm earthy palette */
 :root {
-    --bg: #F7F7F5;
-    --surface: #FFFFFF;
-    --border: #E8E8E4;
-    --text-primary: #1A1A18;
-    --text-secondary: #6B6B65;
-    --accent: #2563EB;
-    --accent-light: #EEF3FF;
-    --success: #16A34A;
-    --warning: #D97706;
-    --danger: #DC2626;
-    --radius: 10px;
+    --bg:            #F5F0EB;
+    --bg-alt:        #EDE7DE;
+    --surface:       #FAF7F4;
+    --surface-2:     #F0EAE1;
+    --border:        #DDD5C8;
+    --border-strong: #C9BFB0;
+    --text-primary:  #2C2418;
+    --text-secondary:#7A6E62;
+    --accent:        #B35C2A;
+    --accent-light:  #F5EDE5;
+    --accent-2:      #5C8C6E;
+    --success:       #4A7C5A;
+    --warning:       #B8870A;
+    --danger:        #A83232;
+    --radius:        12px;
+    --shadow:        0 2px 12px rgba(44,36,24,0.08);
 }
 
 /* Base */
@@ -35,147 +40,225 @@ html, body, [class*="css"] {
     color: var(--text-primary);
 }
 
-.stApp {
-    background: var(--bg);
-}
+.stApp { background: var(--bg); }
 
 /* Hide default streamlit chrome */
 #MainMenu, footer, header { visibility: hidden; }
-.block-container { padding: 2rem 3rem 3rem 3rem; max-width: 1200px; }
-
-/* Title area */
-h1 {
-    font-size: 1.6rem !important;
-    font-weight: 600 !important;
-    letter-spacing: -0.02em;
-    color: var(--text-primary) !important;
-    margin-bottom: 0.15rem !important;
+.block-container {
+    padding: 2.5rem 3.5rem 4rem 3.5rem;
+    max-width: 1240px;
 }
 
-h2, h3 {
-    font-weight: 500 !important;
+/* Title area — editorial serif display */
+h1 {
+    font-family: 'Instrument Serif', Georgia, serif !important;
+    font-size: 2rem !important;
+    font-weight: 400 !important;
     letter-spacing: -0.01em;
     color: var(--text-primary) !important;
+    margin-bottom: 0.1rem !important;
+    line-height: 1.2 !important;
 }
 
-/* Sidebar */
+h2 {
+    font-family: 'Instrument Serif', Georgia, serif !important;
+    font-size: 1.35rem !important;
+    font-weight: 400 !important;
+    letter-spacing: -0.01em;
+    color: var(--text-primary) !important;
+    border-bottom: 1px solid var(--border) !important;
+    padding-bottom: 0.5rem !important;
+    margin-bottom: 1.2rem !important;
+}
+
+h3 {
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    color: var(--text-primary) !important;
+    letter-spacing: 0.01em;
+}
+
+/* Sidebar — warm toned */
 [data-testid="stSidebar"] {
     background: var(--surface) !important;
     border-right: 1px solid var(--border) !important;
 }
 
 [data-testid="stSidebar"] .stRadio label {
-    font-size: 0.85rem;
+    font-size: 0.84rem;
     color: var(--text-secondary);
-    padding: 0.4rem 0;
+    padding: 0.45rem 0;
+    transition: color 0.15s;
 }
 
-/* Metric cards */
+[data-testid="stSidebar"] .stRadio label:hover {
+    color: var(--accent) !important;
+}
+
+/* Metric cards — warm shadow */
 [data-testid="stMetric"] {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    padding: 1rem 1.25rem !important;
+    padding: 1.1rem 1.4rem !important;
+    box-shadow: var(--shadow);
+    border-top: 3px solid var(--accent) !important;
 }
 
-[data-testid="stMetricLabel"] { font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.06em; }
-[data-testid="stMetricValue"] { font-size: 1.6rem; font-weight: 600; color: var(--text-primary); }
+[data-testid="stMetricLabel"] {
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+}
+[data-testid="stMetricValue"] {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-size: 2rem;
+    font-weight: 400;
+    color: var(--accent);
+}
+[data-testid="stMetricDelta"] { font-size: 0.8rem; }
 
 /* Tables */
 [data-testid="stTable"] table, .stDataFrame table {
     font-size: 0.82rem;
     border-collapse: collapse;
     width: 100%;
+    background: var(--surface);
+    border-radius: var(--radius);
+    overflow: hidden;
 }
 
 [data-testid="stTable"] thead th, .stDataFrame thead th {
-    background: var(--bg) !important;
+    background: var(--bg-alt) !important;
     color: var(--text-secondary);
-    font-weight: 500;
-    font-size: 0.72rem;
+    font-weight: 600;
+    font-size: 0.7rem;
     text-transform: uppercase;
-    letter-spacing: 0.06em;
-    padding: 0.6rem 0.8rem !important;
-    border-bottom: 1px solid var(--border) !important;
+    letter-spacing: 0.08em;
+    padding: 0.7rem 1rem !important;
+    border-bottom: 2px solid var(--border-strong) !important;
 }
 
 [data-testid="stTable"] tbody td, .stDataFrame tbody td {
-    padding: 0.55rem 0.8rem !important;
+    padding: 0.6rem 1rem !important;
     border-bottom: 1px solid var(--border) !important;
     color: var(--text-primary);
     font-family: 'DM Mono', monospace;
-    font-size: 0.8rem;
+    font-size: 0.79rem;
+    background: var(--surface);
 }
 
-[data-testid="stTable"] tbody tr:hover, .stDataFrame tbody tr:hover {
+[data-testid="stTable"] tbody tr:nth-child(even) td,
+.stDataFrame tbody tr:nth-child(even) td {
+    background: var(--surface-2) !important;
+}
+
+[data-testid="stTable"] tbody tr:hover td,
+.stDataFrame tbody tr:hover td {
     background: var(--accent-light) !important;
 }
 
 /* Buttons */
 .stButton > button {
-    background: var(--text-primary);
-    color: #fff;
+    background: var(--accent);
+    color: #FAF7F4;
     border: none;
-    border-radius: 6px;
-    padding: 0.45rem 1.1rem;
+    border-radius: 8px;
+    padding: 0.5rem 1.3rem;
     font-family: 'DM Sans', sans-serif;
     font-size: 0.82rem;
-    font-weight: 500;
+    font-weight: 600;
     cursor: pointer;
-    transition: opacity 0.15s;
+    transition: all 0.18s ease;
+    letter-spacing: 0.02em;
+    box-shadow: 0 1px 4px rgba(179,92,42,0.3);
 }
-.stButton > button:hover { opacity: 0.8; }
+.stButton > button:hover {
+    background: #9B4E22;
+    box-shadow: 0 3px 12px rgba(179,92,42,0.35);
+    transform: translateY(-1px);
+}
 
 /* Alerts */
 .stSuccess, .stInfo, .stWarning, .stError {
     border-radius: var(--radius) !important;
-    border: 1px solid var(--border) !important;
     font-size: 0.84rem !important;
 }
-.stSuccess { border-left: 3px solid var(--success) !important; background: #F0FDF4 !important; }
-.stInfo    { border-left: 3px solid var(--accent) !important;  background: var(--accent-light) !important; }
-.stWarning { border-left: 3px solid var(--warning) !important; background: #FFFBEB !important; }
-.stError   { border-left: 3px solid var(--danger) !important;  background: #FEF2F2 !important; }
+.stSuccess { border-left: 4px solid var(--success) !important;  background: #EDF5F0 !important; border: 1px solid #C4DDD0 !important; }
+.stInfo    { border-left: 4px solid var(--accent) !important;   background: var(--accent-light) !important; border: 1px solid #E0C9B5 !important; }
+.stWarning { border-left: 4px solid var(--warning) !important;  background: #FDF5DC !important; border: 1px solid #E8D68A !important; }
+.stError   { border-left: 4px solid var(--danger) !important;   background: #FAEAEA !important; border: 1px solid #E0B0B0 !important; }
 
 /* Expander */
-details { border: 1px solid var(--border) !important; border-radius: var(--radius) !important; padding: 0.25rem !important; }
-summary { font-size: 0.85rem; font-weight: 500; color: var(--text-primary); }
+details {
+    border: 1px solid var(--border) !important;
+    border-radius: var(--radius) !important;
+    padding: 0.3rem 0.5rem !important;
+    background: var(--surface);
+    box-shadow: var(--shadow);
+}
+summary { font-size: 0.85rem; font-weight: 600; color: var(--text-primary); }
 
 /* Divider */
-hr { border-color: var(--border) !important; margin: 1.5rem 0 !important; }
+hr { border-color: var(--border) !important; margin: 2rem 0 !important; }
 
 /* Forms */
 .stTextInput input, .stNumberInput input, .stSelectbox select {
-    border: 1px solid var(--border) !important;
-    border-radius: 6px !important;
+    border: 1px solid var(--border-strong) !important;
+    border-radius: 8px !important;
     font-size: 0.84rem !important;
     font-family: 'DM Sans', sans-serif !important;
+    background: var(--surface) !important;
+    color: var(--text-primary) !important;
+}
+.stTextInput input:focus, .stNumberInput input:focus {
+    border-color: var(--accent) !important;
+    box-shadow: 0 0 0 3px rgba(179,92,42,0.12) !important;
+}
+
+/* Section header stripe */
+.section-badge {
+    display: inline-block;
+    background: var(--accent);
+    color: #FAF7F4;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
 }
 </style>
 """, unsafe_allow_html=True)
 
 # ── Matplotlib style ──────────────────────────────────────────────────────────
-PALETTE = ["#2563EB", "#10B981", "#F59E0B", "#EF4444", "#8B5CF6"]
+PALETTE = ["#B35C2A", "#5C8C6E", "#C4973A", "#A83232", "#7A6E8C", "#4A7080"]
 mpl.rcParams.update({
     "font.family": "sans-serif",
     "font.sans-serif": ["DM Sans", "Helvetica Neue", "Arial"],
     "axes.spines.top": False,
     "axes.spines.right": False,
     "axes.spines.left": False,
-    "axes.spines.bottom": False,
+    "axes.spines.bottom": True,
     "axes.grid": True,
-    "grid.color": "#E8E8E4",
-    "grid.linewidth": 0.8,
-    "axes.facecolor": "#FFFFFF",
-    "figure.facecolor": "#FFFFFF",
-    "axes.labelcolor": "#6B6B65",
-    "xtick.color": "#6B6B65",
-    "ytick.color": "#6B6B65",
+    "grid.color": "#DDD5C8",
+    "grid.linewidth": 0.7,
+    "grid.alpha": 0.7,
+    "axes.facecolor": "#FAF7F4",
+    "figure.facecolor": "#FAF7F4",
+    "axes.labelcolor": "#7A6E62",
+    "xtick.color": "#7A6E62",
+    "ytick.color": "#7A6E62",
     "xtick.labelsize": 9,
     "ytick.labelsize": 9,
-    "axes.titlesize": 11,
+    "axes.titlesize": 12,
     "axes.titleweight": "600",
-    "axes.titlepad": 14,
+    "axes.titlepad": 16,
+    "axes.edgecolor": "#DDD5C8",
+    "figure.dpi": 120,
 })
 
 # ── Data ──────────────────────────────────────────────────────────────────────
@@ -197,8 +280,9 @@ def load_data():
 df = load_data()
 
 # ── Header ────────────────────────────────────────────────────────────────────
-st.title("Sales Analytics Dashboard")
-st.markdown('<p style="color:#6B6B65;font-size:0.88rem;margin-top:-0.5rem;">โครงการทดสอบสมรรถนะรายปี · อาชีพนักวิเคราะห์ข้อมูล</p>', unsafe_allow_html=True)
+st.markdown('<div style="display:flex;align-items:center;gap:0.8rem;margin-bottom:0.2rem;"><span style="background:#B35C2A;color:#FAF7F4;font-size:0.65rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;padding:0.2rem 0.55rem;border-radius:4px;">Dashboard</span></div>', unsafe_allow_html=True)
+st.title("Sales Analytics")
+st.markdown('<p style="color:#7A6E62;font-size:0.88rem;margin-top:-0.3rem;margin-bottom:1.5rem;border-bottom:1px solid #DDD5C8;padding-bottom:1.2rem;">โครงการทดสอบสมรรถนะรายปี · อาชีพนักวิเคราะห์ข้อมูล</p>', unsafe_allow_html=True)
 
 # ── Sidebar ───────────────────────────────────────────────────────────────────
 st.sidebar.markdown('<p style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.08em;color:#6B6B65;font-weight:500;margin-bottom:0.5rem;">เมนูหลัก</p>', unsafe_allow_html=True)
@@ -380,17 +464,20 @@ elif menu == "5. การแสดงผลข้อมูล (Visualization)":
         st.markdown("**แนวโน้มยอดขายรายเดือน**")
         monthly_trend = data.groupby('Month')['Total_Sales'].sum().reset_index()
 
-        fig1, ax1 = plt.subplots(figsize=(10, 3.8))
+        fig1, ax1 = plt.subplots(figsize=(10, 4))
         ax1.plot(monthly_trend['Month'], monthly_trend['Total_Sales'],
-                 color=PALETTE[0], linewidth=2.2, marker='o',
-                 markersize=6, markerfacecolor='white', markeredgewidth=2.2)
+                 color=PALETTE[0], linewidth=2.5, marker='o',
+                 markersize=7, markerfacecolor='#FAF7F4', markeredgewidth=2.5,
+                 markeredgecolor=PALETTE[0])
         ax1.fill_between(monthly_trend['Month'], monthly_trend['Total_Sales'],
-                         alpha=0.07, color=PALETTE[0])
-        ax1.set_title("Monthly Sales Trend", loc='left')
-        ax1.set_ylabel("Sales (Baht)", labelpad=10)
+                         alpha=0.12, color=PALETTE[0])
+        ax1.set_title("Monthly Sales Trend", loc='left', color='#2C2418')
+        ax1.set_ylabel("Sales (Baht)", labelpad=12)
         ax1.set_xlabel("")
         ax1.yaxis.set_major_formatter(mpl.ticker.FuncFormatter(lambda x, _: f"{x:,.0f}"))
-        plt.tight_layout()
+        fig1.patch.set_facecolor('#FAF7F4')
+        ax1.set_facecolor('#FAF7F4')
+        plt.tight_layout(pad=1.5)
         st.pyplot(fig1, use_container_width=True)
 
         st.divider()
@@ -399,20 +486,22 @@ elif menu == "5. การแสดงผลข้อมูล (Visualization)":
         st.markdown("**ยอดขายตามภูมิภาค**")
         region_comp = data.groupby('Region')['Total_Sales'].sum().sort_values(ascending=False).reset_index()
 
-        fig2, ax2 = plt.subplots(figsize=(8, 3.8))
+        fig2, ax2 = plt.subplots(figsize=(8, 4))
+        bar_colors = [PALETTE[1]] + [PALETTE[0]] * (len(region_comp) - 1)
         bars = ax2.bar(region_comp['Region'], region_comp['Total_Sales'],
-                       color=PALETTE[0], width=0.5, zorder=3)
-        # Highlight top bar
-        bars[0].set_color(PALETTE[1])
-        ax2.set_title("Sales by Region", loc='left')
-        ax2.set_ylabel("Total Sales (Baht)", labelpad=10)
+                       color=bar_colors, width=0.52, zorder=3,
+                       edgecolor='#FAF7F4', linewidth=0.8)
+        ax2.set_title("Sales by Region", loc='left', color='#2C2418')
+        ax2.set_ylabel("Total Sales (Baht)", labelpad=12)
         ax2.set_xlabel("")
         ax2.yaxis.set_major_formatter(mpl.ticker.FuncFormatter(lambda x, _: f"{x:,.0f}"))
         for bar in bars:
-            ax2.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 100,
+            ax2.text(bar.get_x() + bar.get_width() / 2, bar.get_height() * 1.02,
                      f"{bar.get_height():,.0f}", ha='center', va='bottom',
-                     fontsize=8.5, color='#6B6B65')
-        plt.tight_layout()
+                     fontsize=8.5, color='#7A6E62', fontweight='600')
+        fig2.patch.set_facecolor('#FAF7F4')
+        ax2.set_facecolor('#FAF7F4')
+        plt.tight_layout(pad=1.5)
         st.pyplot(fig2, use_container_width=True)
 
         st.divider()
